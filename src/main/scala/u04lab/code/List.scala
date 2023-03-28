@@ -3,6 +3,12 @@ package u04lab.code
 import scala.annotation.tailrec
 import u04lab.code.Option.*
 import u04lab.code.Option
+import u04lab.code.Stream.Cons
+
+import java.util
+import scala.collection.immutable
+import scala.runtime.Nothing$
+import scala.util.Random
 // A generic linkedlist
 enum List[E]:
   case Cons(head: E, tail: List[E])
@@ -62,6 +68,24 @@ object List:
     case Cons(elem, rest) if f(elem) => rest
     case Cons(elem, rest) => Cons(elem, remove(rest)(f))
     case _ => Nil()
+
+  def get[A](list: List[A])(i: Int): Option[A] = (list, i) match
+    case (Nil(), _) => Option.None()
+    case (_, i) if i < 0 => Option.None()
+    case (Cons(h, _), 0) => Option.Some(h)
+    case (Cons(_, t), i) => get(t)(i-1)
+
+  def getRandoms[A](list: List[A])(n: Int): List[A] = (list, n) match
+    case (Nil(), _) => Nil()
+    case (_, i) if i <= 0 => Nil()
+    case (Cons(_, _), i) => {
+      val elem = Option.get(get(list)(new Random().nextInt(length(list))))
+      Cons(elem, getRandoms(remove(list)(_ == elem))(i-1))
+    }
+
+  def apply[A](list: List[A])(f: A => Unit): Unit = list match
+    case Cons(h, t) => {f(h); apply(t)(f);}
+    case Nil() => {}
 
   def take[A](list: List[A], n: Int): List[A] = reverse(drop(reverse(list), length(list) - n))
 end List

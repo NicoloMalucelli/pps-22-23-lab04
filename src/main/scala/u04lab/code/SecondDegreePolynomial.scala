@@ -12,23 +12,23 @@ trait SecondDegreePolynomial:
 
 object SecondDegreePolynomial:
   private case class SecondDegreePolynomialImpl(
-    override val secondDegree: Double,
-    override val firstDegree: Double,
-    override val constant: Double) extends SecondDegreePolynomial:
+    secondDegree: Double,
+    firstDegree: Double,
+    constant: Double) extends SecondDegreePolynomial:
 
     override def +(p: SecondDegreePolynomial): SecondDegreePolynomial =
-      new SecondDegreePolynomialImpl(
+      SecondDegreePolynomialImpl(
         firstDegree = this.firstDegree + p.firstDegree,
         secondDegree = this.secondDegree + p.secondDegree,
         constant = this.constant + p.constant)
 
     override def -(p: SecondDegreePolynomial): SecondDegreePolynomial =
-      new SecondDegreePolynomialImpl(
+      SecondDegreePolynomialImpl(
         firstDegree = this.firstDegree - p.firstDegree,
         secondDegree = this.secondDegree - p.secondDegree,
         constant = this.constant - p.constant)
 
-  def apply(secondDegree: Double, firstDegree: Double, constant: Double): SecondDegreePolynomial = new SecondDegreePolynomialImpl(
+  def apply(secondDegree: Double, firstDegree: Double, constant: Double): SecondDegreePolynomial = SecondDegreePolynomialImpl(
     firstDegree = firstDegree,
     secondDegree = secondDegree,
     constant = constant
